@@ -30,8 +30,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -46,8 +45,7 @@ namespace ThreeColor.Server.Data.Repositories
                 _dataContext.SaveChanges();
             } catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -65,8 +63,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -84,8 +81,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -100,8 +96,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -119,8 +114,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -152,8 +146,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -172,13 +165,14 @@ namespace ThreeColor.Server.Data.Repositories
                 oldTest.PointSize = test.PointSize;
                 oldTest.Speed = test.Speed;
                 oldTest.IsDeleted = test.IsDeleted;
+                oldTest.FieldHeight = test.FieldHeight;
+                oldTest.FieldWidth = test.FieldWidth;
 
                 _dataContext.SaveChanges();
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -201,8 +195,25 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
+            }
+
+            return returnModel;
+        }
+
+        public ReturnDataModel<double> GetAverageByLastTest()
+        {
+            ReturnDataModel<double> returnModel = new ReturnDataModel<double>();
+            try
+            {
+                var pointId = GetLastResults().Data.Max(d => d.PointId);
+                var testId = _dataContext.Points.Find(pointId).TestId;
+                var pointsByTest = _dataContext.Points.Where(p => p.TestId == testId).Select(p => p.Id);
+                returnModel.Data = _dataContext.Results.Where(r => pointsByTest.Contains(r.PointId)).Average(r => r.Time);
+            }
+            catch (Exception ex)
+            {
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -217,8 +228,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -234,8 +244,7 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
@@ -250,11 +259,76 @@ namespace ThreeColor.Server.Data.Repositories
             }
             catch (Exception ex)
             {
-                returnModel.Exception = ex;
-                returnModel.ErrorMessage = ex.Message;
+                returnModel.LoadException(ex);
             }
 
             return returnModel;
+        }
+
+        public ReturnDataModel<Users> GetExistingUser(Users userModel)
+        {
+            var result = new ReturnDataModel<Users>();
+            try
+            {
+                result.Data = _dataContext.Users.First(u =>
+                    string.Equals(u.Activity, userModel.Activity) &&
+                    string.Equals(u.Gender, userModel.Gender) &&
+                    u.Age == userModel.Age);
+            }
+            catch(InvalidOperationException)
+            {
+                result.ErrorMessage = "User cannot be found";
+            }
+
+            return result;
+        }
+
+        public ReturnDataModel<Users> AddUser(Users userModel)
+        {
+            var result = new ReturnDataModel<Users>();
+            try
+            {
+                _dataContext.Users.Add(userModel);
+                _dataContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                result.LoadException(ex);
+            }
+            return result;
+        }
+
+        public ReturnDataModel<Users> GetUser(Guid newId)
+        {
+            var result = new ReturnDataModel<Users>();
+            try
+            {
+                result.Data = _dataContext.Users.Where(u => string.Equals(u.NewId.ToString(), newId.ToString())).FirstOrDefault();
+            }
+            catch(InvalidOperationException ex)
+            {
+                result.LoadException(ex);
+            }
+            catch (Exception ex)
+            {
+                result.LoadException(ex);
+            }
+            return result;
+        }
+
+        public ReturnDataModel<List<Points>> GetPoints()
+        {
+            var result = new ReturnDataModel<List<Points>>();
+            try
+            {
+                result.Data = _dataContext.Points.ToList();
+            }
+            catch (Exception ex)
+            {
+                result.LoadException(ex);
+            }
+
+            return result;
         }
     }
 }

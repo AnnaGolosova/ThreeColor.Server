@@ -81,5 +81,24 @@ namespace ThreeColor.Server.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("Delete/{testId}")]
+        public IHttpActionResult DeleteTestById([FromUri]int testId)
+        {
+            var test = _dataRepository.GetTest(testId);
+            if (!test.IsSuccess)
+            {
+                return Content(HttpStatusCode.NotFound, "Test cannot be found");
+            }
+            if(test.Data!= null)
+                test.Data.IsDeleted = 1;
+
+            var returnModel = _dataRepository.UpdateTest(test.Data);
+
+            if (!returnModel.IsSuccess)
+                return Content(HttpStatusCode.BadRequest, returnModel.Exception);
+
+            return Ok();
+        }
     }
 }

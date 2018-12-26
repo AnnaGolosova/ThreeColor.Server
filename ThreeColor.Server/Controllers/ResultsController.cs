@@ -78,14 +78,14 @@ namespace ThreeColor.Server.Controllers
         }
 
         [HttpGet]
-        [Route("AverageTime/{testId}")]
+        [Route("AverageByLastTest")]
         public IHttpActionResult GetAverageTimeByLastTest()
         {
-            var returnModel = _dataRepository.GetResultsByLastTest(_dataRepository.GetLastResults().Data.FirstOrDefault().t);
+            var returnModel = _dataRepository.GetAverageByLastTest();
             if (!returnModel.IsSuccess)
                 return Content(HttpStatusCode.BadRequest, returnModel.Exception);
 
-            return Ok(returnModel.Data.Average(r => r.Time));
+            return Ok(returnModel.Data);
         }
     }
 }
