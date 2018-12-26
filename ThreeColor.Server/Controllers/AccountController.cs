@@ -7,6 +7,9 @@ using System.Web;
 using System.Web.Http;
 using ThreeColor.Data.Models;
 using ThreeColor.Server.Data;
+using Microsoft.AspNet.Identity.EntityFramework;
+using ThreeColor.Server.Abstract;
+using System.Net;
 
 namespace ThreeColor.Server.Controllers
 {
@@ -14,10 +17,12 @@ namespace ThreeColor.Server.Controllers
     public class AccountController : ApiController
     {
         private AuthRepository _repo = null;
+        private readonly IDataRepository _dataRepository;
 
-        public AccountController()
+        public AccountController(IDataRepository dataRepository)
         {
             _repo = new AuthRepository();
+            _dataRepository = dataRepository;
         }
 
         // POST api/Account/Register
@@ -40,6 +45,47 @@ namespace ThreeColor.Server.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("User/Get")]
+        public IHttpActionResult GetExistingUser([FromBody]Users userModel)
+        {
+            if (userModel == null)
+                return BadRequest("Test cannot be empty!");
+            var result = _dataRepository.GetExistingUser(userModel);
+            if (!result.IsSuccess && string.Equals(result.ErrorMessage, "User cannot be found"))
+                return Ok();
+            else if (!result.IsSuccess)
+                return Content(HttpStatusCode.BadRequest, result.Exception);
+
+            return Ok(result.Data);
+        }
+
+        [HttpPost]
+        [Route("User/Add")]
+        public IHttpActionResult AddUser(Users userModel)
+        {
+            if (userModel == null)
+                return BadRequest("Test cannot be empty!");
+            var result = _dataRepository.AddUser(userModel);
+            if (!result.IsSuccess)
+                return Content(HttpStatusCode.BadRequest, result.Exception);
+
+            return Ok(result.Data);
+        }
+
+        [HttpGet]
+        [Route("User/{newId}")]
+        public IHttpActionResult GetUserByNewId([FromUri]Guid newId)
+        {
+            if (newId == null)
+                return BadRequest("Test cannot be empty!");
+            var result = _dataRepository.GetUser(newId);
+            if (!result.IsSuccess)
+                return Content(HttpStatusCode.BadRequest, result.Exception);
+
+            return Ok(result.Data);
         }
 
         protected override void Dispose(bool disposing)

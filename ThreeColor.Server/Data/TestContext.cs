@@ -11,7 +11,11 @@ namespace ThreeColor.Server.Data
     public class TestContext : DbContext
     {
         public TestContext()
-            : base("Test2") { }
+#if DEBUG
+            : base("TestConnection") { }
+#else
+            : base("ProdConnection") { }
+#endif
 
         public virtual DbSet<Tests> Tests { get; set; }
         public virtual DbSet<Points> Points { get; set; }

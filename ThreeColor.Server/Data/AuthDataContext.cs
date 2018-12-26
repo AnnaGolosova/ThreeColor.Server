@@ -9,9 +9,10 @@ namespace ThreeColor.Server.Data
     public class AuthDataContext : IdentityDbContext<IdentityUser>
     {
         public AuthDataContext()
-            : base("Test2")
-        {
-
-        }
+#if DEBUG
+            : base("TestConnection") { }
+#else
+            : base("ProdConnection") { }
+#endif
     }
 }

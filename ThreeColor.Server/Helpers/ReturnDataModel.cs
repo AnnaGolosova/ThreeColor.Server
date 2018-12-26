@@ -23,5 +23,12 @@ namespace ThreeColor.Server.Helpers
                     Exception == null;
             }
         }
+
+        public void LoadException(Exception ex)
+        {
+            Exception = ex;
+            ErrorMessage = ex.Message;
+        }
+
     }
 }

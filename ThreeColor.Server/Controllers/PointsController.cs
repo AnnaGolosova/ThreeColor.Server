@@ -24,7 +24,7 @@ namespace ThreeColor.Server.Controllers
 
         [HttpGet]
         [Route("{testId}/{includeDeleted}")]
-        public IHttpActionResult GetPoints(int? testId, bool includeDeleted = false)
+        public IHttpActionResult GetPoints(int? testId, bool includeDeleted)
         {
             if (testId == null)
                 return BadRequest("Id cannot be empty!");
@@ -47,6 +47,17 @@ namespace ThreeColor.Server.Controllers
                 return Content(HttpStatusCode.BadRequest, result.Exception);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("All")]
+        public IHttpActionResult GetAllPoints()
+        {
+            var result = _dataRepository.GetPoints();
+            if (!result.IsSuccess)
+                return Content(HttpStatusCode.BadRequest, result.Exception);
+
+            return Ok(result.Data);
         }
 
         [HttpPut]
