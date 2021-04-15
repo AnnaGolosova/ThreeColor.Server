@@ -6,12 +6,12 @@ namespace ThreeColor.Data.Models
 {
     public class Results
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int TestingNumber { get; set; }
-        public int UserId { get; set; }
-        public int PointId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid PointId { get; set; }
         public int Time { get; set; }
-        public ErrorCodes ErrorCode { get; set; }
+        public ErrorCode ErrorCode { get; set; }
         public DateTime Date { get; set; }
 
         public virtual Points Point { get; set; }

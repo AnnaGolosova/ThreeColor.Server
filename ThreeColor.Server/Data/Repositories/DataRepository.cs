@@ -51,9 +51,9 @@ namespace ThreeColor.Server.Data.Repositories
             return returnModel;
         }
 
-        public ReturnDataModel<int> AddTest(Tests test)
+        public ReturnDataModel<Guid> AddTest(Tests test)
         {
-            ReturnDataModel<int> returnModel = new ReturnDataModel<int>();
+            ReturnDataModel<Guid> returnModel = new ReturnDataModel<Guid>();
             try
             {
                 _dataContext.Tests.Add(test);
@@ -69,7 +69,7 @@ namespace ThreeColor.Server.Data.Repositories
             return returnModel;
         }
 
-        public ReturnDataModel<List<Points>> GetPoints(int testId, bool includeDeleted)
+        public ReturnDataModel<List<Points>> GetPoints(Guid testId, bool includeDeleted)
         {
             ReturnDataModel<List<Points>> returnModel = new ReturnDataModel<List<Points>>();
             try
@@ -234,7 +234,7 @@ namespace ThreeColor.Server.Data.Repositories
             return returnModel;
         }
 
-        public ReturnDataModel<List<Results>> GetResultsByTest(int testId)
+        public ReturnDataModel<List<Results>> GetResultsByTest(Guid testId)
         {
             ReturnDataModel<List<Results>> returnModel = new ReturnDataModel<List<Results>>();
             try
@@ -290,24 +290,6 @@ namespace ThreeColor.Server.Data.Repositories
             {
                 _dataContext.Users.Add(userModel);
                 _dataContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                result.LoadException(ex);
-            }
-            return result;
-        }
-
-        public ReturnDataModel<Users> GetUser(Guid newId)
-        {
-            var result = new ReturnDataModel<Users>();
-            try
-            {
-                result.Data = _dataContext.Users.Where(u => string.Equals(u.NewId.ToString(), newId.ToString())).FirstOrDefault();
-            }
-            catch(InvalidOperationException ex)
-            {
-                result.LoadException(ex);
             }
             catch (Exception ex)
             {

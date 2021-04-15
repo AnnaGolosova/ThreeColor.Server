@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\ErrorCodes.cs" />
+    <Compile Include="Models\ErrorCode.cs" />
     <Compile Include="Models\Points.cs" />
     <Compile Include="Models\Results.cs" />
     <Compile Include="Models\Tests.cs" />

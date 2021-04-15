@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ThreeColor.Data.Models
+﻿namespace ThreeColor.Data.Models
 {
     public class UserModel
     {

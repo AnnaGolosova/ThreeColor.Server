@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using ThreeColor.Data.Models;
 using ThreeColor.Server.Data;
-using Microsoft.AspNet.Identity.EntityFramework;
 using ThreeColor.Server.Abstract;
 using System.Net;
 
@@ -77,7 +72,7 @@ namespace ThreeColor.Server.Controllers
 
         [HttpGet]
         [Route("User/{newId}")]
-        public IHttpActionResult GetUserByNewId([FromUri]Guid newId)
+        public IHttpActionResult GetUserByNewId([FromUri]string newId)
         {
             if (newId == null)
                 return BadRequest("Test cannot be empty!");

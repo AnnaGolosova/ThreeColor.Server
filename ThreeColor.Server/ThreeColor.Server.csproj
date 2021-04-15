@@ -244,10 +244,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="ThreeColor.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>XRef\ThreeColor.Data.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Http.WebHost">
@@ -289,6 +285,10 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\IIS build.pubxml" />
+    <None Include="Properties\PublishProfiles\three-color-server - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\three-color-server - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\three-color-web - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\three-color-web - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\ThreeColor.Server.Prod.pubxml" />
     <None Include="Properties\PublishProfiles\Threecolor.Server.Test release.pubxml" />
     <None Include="Properties\PublishProfiles\ThreeColorServer - Web Deploy.pubxml" />
@@ -304,6 +304,12 @@
     <Folder Include="App_Data\" />
     <Folder Include="DataBase\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ThreeColor.Data\ThreeColor.Data.csproj">
+      <Project>{d8b59b78-32d7-48f7-a160-8a43b4dea771}</Project>
+      <Name>ThreeColor.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -339,6 +345,8 @@
           <DevelopmentServerPort>50863</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:50863/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:50863/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -25,7 +25,7 @@ namespace ThreeColor.Server.Abstract
 
         ReturnDataModel<int> GetNewTestingNumber();
 
-        ReturnDataModel<List<Points>> GetPoints(int testId, bool includeDeleted);
+        ReturnDataModel<List<Points>> GetPoints(Guid testId, bool includeDeleted);
 
         ReturnDataModel<List<Points>> GetPoints();
 
@@ -45,7 +45,7 @@ namespace ThreeColor.Server.Abstract
 
         ReturnDataModel<Users> AddUser(Users userModel);
 
-        ReturnDataModel<Users> GetUser(Guid newId);
+        ReturnDataModel<Users> GetUser(string newId);
 
         ReturnDataModel<double> GetAverageByLastTest();
     }

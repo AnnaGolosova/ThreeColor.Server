@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ThreeColor.Data.Models
 {
     public class Tests
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string FieldColor { get; set; }
         public int PointSize { get; set; }
